@@ -8,7 +8,7 @@ set ruler
 set wildmenu            " Popup a window showing all matching command above command line when autocomplete.
 
 """ General
-" sets how many lines of history VIM has to remeber.
+" sets how many lines of history VIM has to remeber. 
 set history=100
 
 " backspace key behavior
