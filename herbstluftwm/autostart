@@ -1,0 +1,148 @@
+#!/bin/bash
+
+# this is a simple config for herbstluftwm
+
+function hc() {
+    herbstclient "$@"
+}
+
+hc emit_hook reload
+
+#xsetroot -solid '#5A8E3A'
+feh --bg-fill ~/.wallpapers/pEsjd6T.jpg
+
+#fuckcaps n shit
+fuckcaps
+xmodmap ~/.Xmodmap
+
+
+# remove all existing keybindings
+hc keyunbind --all
+
+
+# keybindings
+Mod=Mod4
+hc keybind $Mod-Control-q quit
+hc keybind $Mod-Shift-r reload
+hc keybind $Mod-Shift-c close
+hc keybind $Mod-Return spawn terminator
+hc keybind $Mod-d spawn run-recent
+hc keybind $Mod-w spawn chromium-browser
+hc keybind $Mod-Control-l spawn /usr/lib/kde4/libexec/kscreenlocker_greet
+
+
+# tags
+TAG_NAMES=( {1..8} )
+TAG_KEYS=( {1..8} 0 )
+
+hc rename default "${TAG_NAMES[0]}" || true
+for i in ${!TAG_NAMES[@]} ; do
+    hc add "${TAG_NAMES[$i]}"
+    key="${TAG_KEYS[$i]}"
+    if ! [ -z "$key" ] ; then
+        hc keybind "$Mod-$key" use "${TAG_NAMES[$i]}"
+        hc keybind "$Mod-Shift-$key" move "${TAG_NAMES[$i]}"
+    fi
+done
+
+#fix Mod-# for programmers dvorak
+hc keybind $Mod-ampersand use "chat"
+hc keybind $Mod-bracketleft use "dev" 
+hc keybind $Mod-braceleft use "shell"
+hc keybind $Mod-braceright use "mail" 
+hc keybind $Mod-parenleft use "code" 
+hc keybind $Mod-equal use "web" 
+hc keybind $Mod-asterisk use "spotify"
+hc keybind $Mod-parenright use "misc" 
+
+
+
+#add Monitors
+hc add_monitor 1440x900+0+0 1
+hc add_monitor 1920x1080+1440+0 2
+hc add_monitor 1440x900+3360+0 3
+hc add_monitor 1440x900+4800+0 4
+hc move_monitor 0 1440x900+0+0
+
+#Shit for intellij
+wmname LG3D
+
+# layouting
+hc keybind $Mod-r remove
+hc keybind $Mod-space cycle_layout 2
+hc keybind $Mod-Control-space cycle_layout 1
+hc keybind $Mod-u split vertical 0.5
+hc keybind $Mod-o split horizontal 0.5
+hc keybind $Mod-l floating toggle
+hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-p pseudotile toggle
+
+hc keybind $Mod-comma move_index -1
+hc keybind $Mod-period move_index +1
+
+# resizing PANELS
+RESIZESTEP=0.05
+hc keybind $Mod-Alt-h resize left +$RESIZESTEP
+hc keybind $Mod-Alt-n resize down +$RESIZESTEP
+hc keybind $Mod-Alt-t resize up +$RESIZESTEP
+hc keybind $Mod-Alt-s resize right +$RESIZESTEP
+
+# mouse
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 resize
+hc mousebind $Mod-Button3 zoom
+
+# focus
+hc keybind $Mod-z spawn focusurgent
+hc keybind $Mod-BackSpace use_index +1 --skip-visible
+hc keybind $Mod-Shift-BackSpace use_index -1 --skip-visible
+hc keybind $Mod-Control-s cycle_monitor
+hc keybind $Mod-Control-h cycle_monitor -1
+hc keybind $Mod-Tab         cycle_all +1
+hc keybind $Mod-Shift-Tab   cycle_all -1
+hc keybind $Mod-c cycle
+hc keybind $Mod-h focus left
+hc keybind $Mod-n focus down
+hc keybind $Mod-t focus up
+hc keybind $Mod-s focus right
+hc keybind $Mod-Shift-h shift left
+hc keybind $Mod-Shift-n shift down
+hc keybind $Mod-Shift-t shift up
+hc keybind $Mod-Shift-s shift right
+
+# colors
+hc set frame_border_active_color '#49351D'
+hc set frame_border_normal_color '#73532D'
+hc set frame_bg_normal_color '#BD9768'
+hc set frame_bg_active_color '#424140'
+hc set frame_border_width 2
+hc set window_border_width 2
+hc set window_border_normal_color '#AE8451'
+hc set window_border_active_color '#F6FF00'
+hc set frame_bg_transparent
+hc set frame_gap 8
+
+# rules
+hc unrule -F
+#hc rule class=XTerm tag=3 # move all xterms to tag 3
+hc rule focus=off # normally do not focus new clients
+# give focus to most common terminals
+hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
+
+panel=/etc/xdg/herbstluftwm/panel.sh
+for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
+    "$panel" $monitor &
+done
+
+hc rename 1 "chat"
+hc rename 2 "dev" 
+hc rename 3 "shell"
+hc rename 4 "mail"
+hc rename 5 "code"
+hc rename 6 "web"
+hc rename 7 "spotify"
+hc rename 8 "misc"
+
