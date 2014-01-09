@@ -9,10 +9,10 @@ function hc() {
 hc emit_hook reload
 
 #xsetroot -solid '#5A8E3A'
-feh --bg-fill ~/.wallpapers/pEsjd6T.jpg
+feh --bg-fill ~/Images/walls/NNZUJrW.jpg
 
 #fuckcaps n shit
-fuckcaps
+#fuckcaps
 xmodmap ~/.Xmodmap
 
 
@@ -25,43 +25,38 @@ Mod=Mod4
 hc keybind $Mod-Control-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn terminator
-hc keybind $Mod-d spawn run-recent
+hc keybind $Mod-Return spawn urxvt 
+hc keybind $Mod-d spawn dmenu_run
 hc keybind $Mod-w spawn chromium-browser
 hc keybind $Mod-Control-l spawn /usr/lib/kde4/libexec/kscreenlocker_greet
 
 
 # tags
-TAG_NAMES=( {1..8} )
-TAG_KEYS=( {1..8} 0 )
+TAG_NAMES=( "chat" "shell" "dev" "web" "music" "misc"  )
 
 hc rename default "${TAG_NAMES[0]}" || true
 for i in ${!TAG_NAMES[@]} ; do
     hc add "${TAG_NAMES[$i]}"
-    key="${TAG_KEYS[$i]}"
-    if ! [ -z "$key" ] ; then
-        hc keybind "$Mod-$key" use "${TAG_NAMES[$i]}"
-        hc keybind "$Mod-Shift-$key" move "${TAG_NAMES[$i]}"
-    fi
 done
 
 #fix Mod-# for programmers dvorak
 hc keybind $Mod-ampersand use "chat"
-hc keybind $Mod-bracketleft use "dev" 
-hc keybind $Mod-braceleft use "shell"
-hc keybind $Mod-braceright use "mail" 
-hc keybind $Mod-parenleft use "code" 
-hc keybind $Mod-equal use "web" 
-hc keybind $Mod-asterisk use "spotify"
-hc keybind $Mod-parenright use "misc" 
+hc keybind $Mod-bracketleft use "shell" 
+hc keybind $Mod-braceleft use "dev"
+hc keybind $Mod-braceright use "web" 
+hc keybind $Mod-parenleft use "music" 
+hc keybind $Mod-equal use "misc" 
 
-
+hc keybind $Mod-percent move "chat"
+hc keybind $Mod-7 move_index "shell"
+hc keybind $Mod-5 move_index "dev"
+hc keybind $Mod-3 move_index "web"
+hc keybind $Mod-1 move_index "music"
+hc keybind $Mod-9 move_index "misc"
 
 #add Monitors
-hc add_monitor 1440x900+0+0 1
-hc add_monitor 1920x1080+1440+0 2
-hc add_monitor 1440x900+3360+0 3
-hc add_monitor 1440x900+4800+0 4
+hc add_monitor 1440x900+0+0 "chat"
+hc add_monitor 1920x1080+1440+0 "shell"
 hc move_monitor 0 1440x900+0+0
 
 #Shit for intellij
@@ -111,21 +106,21 @@ hc keybind $Mod-Shift-t shift up
 hc keybind $Mod-Shift-s shift right
 
 # colors
-hc set frame_border_active_color '#49351D'
-hc set frame_border_normal_color '#73532D'
+hc set frame_border_active_color '#98AFC7'
+hc set frame_border_normal_color '#646D7E'
 hc set frame_bg_normal_color '#BD9768'
 hc set frame_bg_active_color '#424140'
 hc set frame_border_width 2
 hc set window_border_width 2
-hc set window_border_normal_color '#AE8451'
-hc set window_border_active_color '#F6FF00'
+hc set window_border_normal_color '#848482'
+hc set window_border_active_color '#78C7C7'
 hc set frame_bg_transparent
 hc set frame_gap 8
 
 # rules
 hc unrule -F
 #hc rule class=XTerm tag=3 # move all xterms to tag 3
-hc rule focus=off # normally do not focus new clients
+hc rule focus=on # normally do not focus new clients
 # give focus to most common terminals
 hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
@@ -136,13 +131,3 @@ panel=/etc/xdg/herbstluftwm/panel.sh
 for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
     "$panel" $monitor &
 done
-
-hc rename 1 "chat"
-hc rename 2 "dev" 
-hc rename 3 "shell"
-hc rename 4 "mail"
-hc rename 5 "code"
-hc rename 6 "web"
-hc rename 7 "spotify"
-hc rename 8 "misc"
-
