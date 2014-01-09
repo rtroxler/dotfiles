@@ -1,13 +1,9 @@
 "System Variables
 
-""" User Interface
-set guifont=ProFontWindows:h9
-set guioptions-=T
-set ruler
 
-set wildmenu            " Popup a window showing all matching command above command line when autocomplete.
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ General
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " sets how many lines of history VIM has to remeber. 
 set history=100
 
@@ -17,51 +13,41 @@ set wrap
 " set to auto read when a file is changed from the outside.
 set autoread
 
+" Set 7 lines to the cursor, when moving vertically using t, n
+set so=7
+
+" For pasting data from outside application into vim.
+set pastetoggle=<F2>
+
 " search
 set incsearch           " incremental search mode
 set nohlsearch            " highlight search things
 set ignorecase          " ignore case when searching
 set smartcase           " only works when ignorecase on
 
-
 " encoding
 set encoding=utf-8
 set fileencodings=utf-8,latin-1,chinese
 
-colorscheme slate
+" colorscheme 
+colorscheme slate 
+
+" User Interface
+set guifont=ProFontWindows:h9
+set guioptions-=T
+set ruler
+
+set wildmenu            " Popup a window showing all matching command above command line when autocomplete.
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Coding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set showmatch 		" show matching brackets.
 set matchtime=2         " the length of time to show matching paren.
 
-
-" Clojure options
-let g:slime_target = "tmux"
-
-autocmd Syntax clojure RainbowParenthesesLoadRound
-autocmd BufEnter *.clj RainbowParenthesesToggle
-autocmd BufLeave *.clj RainbowParenthesesToggle
-
-let g:rbpt_colorpairs = [
-    \ ['magenta',     'purple1'],
-    \ ['cyan',        'magenta1'],
-    \ ['green',       'slateblue1'],
-    \ ['yellow',      'cyan1'],
-    \ ['red',         'springgreen1'],
-    \ ['magenta',     'green1'],
-    \ ['cyan',        'greenyellow'],
-    \ ['green',       'yellow1'],
-    \ ['yellow',      'orange1'],
-    \ ]
-let g:rbpt_max = 9
-
-
 syntax on
 filetype plugin indent on
-""" Pathogen
-execute pathogen#infect()
-
 set iskeyword+=_,$,@,%,#,-  " don't linebreak when encounter these characters.
 
 set tabstop=8		" The number of spaces count for a TAB.
@@ -74,11 +60,6 @@ set smartindent
 "set cindent            " cindent will disable smartindent, but only for C-like programming.
 
 set autowrite		" Automatically save before commands like :next and :make
-
-
-" setup new filetype: jsfl
-"autocmd BufRead,BufNewFile *.jsfl	set filetype=javascript
-
 
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
@@ -95,7 +76,12 @@ set spelllang=en_us
 
 set number
 
-"Remap to dvorak
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Dvorak and Other keymappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Remap to dvorak, hjkl become htns
 noremap n j
 noremap N J
 noremap t k
@@ -116,5 +102,9 @@ noremap _ ^
 noremap ` '
 noremap ' `
 
+" set 'ii' to Esc
 :imap ii <Esc>
+
+" delete whole words (like Ctrl - Backspace) with Ctrl - w
 :imap <C-BS> <C-W>
+

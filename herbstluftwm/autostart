@@ -8,30 +8,29 @@ function hc() {
 
 hc emit_hook reload
 
-#xsetroot -solid '#5A8E3A'
+##########################################################
+# General
+##########################################################
+
+#Set background image
 feh --bg-fill ~/Images/walls/NNZUJrW.jpg
 
-#fuckcaps n shit
-#fuckcaps
+# Read in xmodmap
 xmodmap ~/.Xmodmap
 
+#Shit for intellij
+wmname LG3D
 
 # remove all existing keybindings
 hc keyunbind --all
 
+# Read in monitor layout from arandr
+sh ~/.screenlayout/something.sh
 
-# keybindings
-Mod=Mod4
-hc keybind $Mod-Control-q quit
-hc keybind $Mod-Shift-r reload
-hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn urxvt 
-hc keybind $Mod-d spawn dmenu_run
-hc keybind $Mod-w spawn chromium-browser
-hc keybind $Mod-Control-l spawn /usr/lib/kde4/libexec/kscreenlocker_greet
+# Start gnome-screensaver for lock screen
+gnome-screensaver &
 
-
-# tags
+# Tags
 TAG_NAMES=( "chat" "shell" "dev" "web" "music" "misc"  )
 
 hc rename default "${TAG_NAMES[0]}" || true
@@ -39,7 +38,27 @@ for i in ${!TAG_NAMES[@]} ; do
     hc add "${TAG_NAMES[$i]}"
 done
 
-#fix Mod-# for programmers dvorak
+#add Monitors
+hc add_monitor 1440x900+0+0 "chat"
+hc add_monitor 1920x1080+1440+0 "shell"
+hc move_monitor 0 1440x900+0+0
+
+
+##########################################################
+# Keybindings
+##########################################################
+
+# Change Mod to Super
+Mod=Mod4
+hc keybind $Mod-Control-q quit
+hc keybind $Mod-Shift-r reload
+hc keybind $Mod-Shift-c close
+hc keybind $Mod-Return spawn urxvt 
+hc keybind $Mod-d spawn dmenu_run
+hc keybind $Mod-w spawn chromium-browser
+hc keybind $Mod-Control-l spawn gnome-screensaver-command -l
+
+# Fix Mod-# for programmers dvorak (same as Mod-1 to go to tag 1)
 hc keybind $Mod-ampersand use "chat"
 hc keybind $Mod-bracketleft use "shell" 
 hc keybind $Mod-braceleft use "dev"
@@ -48,20 +67,12 @@ hc keybind $Mod-parenleft use "music"
 hc keybind $Mod-equal use "misc" 
 
 #These are broken
-hc keybind $Mod-percent move "chat"
+hc keybind $Mod-percent move_index "chat"
 hc keybind $Mod-7 move_index "shell"
 hc keybind $Mod-5 move_index "dev"
 hc keybind $Mod-3 move_index "web"
 hc keybind $Mod-1 move_index "music"
 hc keybind $Mod-9 move_index "misc"
-
-#add Monitors
-hc add_monitor 1440x900+0+0 "chat"
-hc add_monitor 1920x1080+1440+0 "shell"
-hc move_monitor 0 1440x900+0+0
-
-#Shit for intellij
-wmname LG3D
 
 # layouting
 hc keybind $Mod-r remove
@@ -106,7 +117,10 @@ hc keybind $Mod-Shift-n shift down
 hc keybind $Mod-Shift-t shift up
 hc keybind $Mod-Shift-s shift right
 
-# colors
+
+##########################################################
+# Colors
+##########################################################
 hc set frame_border_active_color '#98AFC7'
 hc set frame_border_normal_color '#646D7E'
 hc set frame_bg_normal_color '#BD9768'
@@ -118,7 +132,10 @@ hc set window_border_active_color '#78C7C7'
 hc set frame_bg_transparent 1
 hc set frame_gap 8
 
-# rules
+##########################################################
+# Rules 
+##########################################################
+
 hc unrule -F
 #hc rule class=XTerm tag=3 # move all xterms to tag 3
 hc rule focus=on # normally do not focus new clients
@@ -128,8 +145,13 @@ hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
 
+
+##########################################################
+# Panel
+##########################################################
 panel=~/.config/herbstluftwm/panel.sh
 [ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
 for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
     "$panel" $monitor &
 done
+
