@@ -3,7 +3,9 @@
 # this is a simple config for herbstluftwm
 
 function hc() {
-    herbstclient "$@"
+   # herbstclient "$@"
+   # implement chaining here
+   cmds="$cmds , $@"
 }
 
 hc emit_hook reload
@@ -29,6 +31,9 @@ sh ~/.screenlayout/something.sh
 
 # Start gnome-screensaver for lock screen
 gnome-screensaver &
+
+# Conky config file 
+# dzconky &
 
 # Tags
 TAG_NAMES=( "chat" "shell" "dev" "web" "music" "misc"  )
@@ -105,9 +110,9 @@ hc keybind $Mod-BackSpace use_index +1 --skip-visible
 hc keybind $Mod-Shift-BackSpace use_index -1 --skip-visible
 hc keybind $Mod-Control-s cycle_monitor
 hc keybind $Mod-Control-h cycle_monitor -1
-hc keybind $Mod-Tab         cycle_all +1
-hc keybind $Mod-Shift-Tab   cycle_all -1
-hc keybind $Mod-c cycle
+# hc keybind $Mod-Tab         cycle_all +1 don't really use these
+# hc keybind $Mod-Shift-Tab   cycle_all -1
+hc keybind $Mod-Tab cycle
 hc keybind $Mod-h focus left
 hc keybind $Mod-n focus down
 hc keybind $Mod-t focus up
@@ -145,6 +150,9 @@ hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
 
+
+# CHAIN
+herbstclient chain $cmds&
 
 ##########################################################
 # Panel
