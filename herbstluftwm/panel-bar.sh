@@ -40,8 +40,8 @@ herbstclient pad $monitor 18
 
     # date
     while true ; do
-        date +'date_day %A %e.  '
-        date +'date_min %H:%M  '
+        date +'date_day %A, %h %e.  '
+        date +'date_min %I:%M  '
         sleep 1 || break
     done > >(uniq_linebuffered) &
     date_pid=$!
@@ -56,6 +56,7 @@ herbstclient pad $monitor 18
     unset TAGS[${#TAGS[@]}-1]
     date_day=""
     date_min=""
+    windowtitle=""
     visible=true
 
     while true ; do
@@ -82,9 +83,15 @@ herbstclient pad $monitor 18
         done
         # align left
         echo -n "\l"
-        # display song and separator only if something's playing
-        if [[ $song ]]; then
-            echo -n "\ur\fr  $song$separator"
+        # display window title, limiting to 50 characters
+        if [[ $windowtitle ]]; then
+            echo -n "\ur\fr\br"
+            echo -n "${windowtitle:0:50}" | tr '[:lower:]' '[:upper:]'
+            len=${#windowtitle}
+            if [[ "$len" -gt 50 ]]; then
+                echo -n "..."
+            fi
+            echo -n "$separator"
         fi
 
         # align right
@@ -118,6 +125,8 @@ herbstclient pad $monitor 18
             reload)
                 exit
                 ;;
+            focus_changed|window_title_changed)
+                windowtitle="${cmd[@]:2}"
         esac
     done
 } 2> /dev/null | bar $1 -w $panel_width -x $x 
