@@ -9,6 +9,8 @@ set -f
 function uniq_linebuffered() {
     awk -W interactive '$0 != l { print ; l=$0 ; fflush(); }' "$@"
 }
+
+# If you want mpd songs
 function get_mpd_song() {
     # use mpc to get currently playing song, uppercase it
     song=$(mpc current -h $HOME/.mpdsock -f %title%)
@@ -53,7 +55,6 @@ herbstclient pad $monitor 18
     kill $date_pid $mpd_pid
 } 2> /dev/null | {
     TAGS=( $(herbstclient tag_status $monitor) )
-    unset TAGS[${#TAGS[@]}-1]
     date_day=""
     date_min=""
     windowtitle=""
@@ -98,7 +99,7 @@ herbstclient pad $monitor 18
         echo -n "\r\ur\fr\br"
         echo -n "$separator"
         echo -n "$date_day" | tr '[:lower:]' '[:upper:]'
-        echo -n " \f2"
+        echo -n " \f6"
         echo -n "$date_min  " | tr '[:lower:]' '[:upper:]'
         echo
         # wait for next event
@@ -108,7 +109,6 @@ herbstclient pad $monitor 18
         case "${cmd[0]}" in
             tag*)
                 TAGS=( $(herbstclient tag_status $monitor) )
-                unset TAGS[${#TAGS[@]}-1]
                 ;;
             date_day)
                 date_day="${cmd[@]:1}"
