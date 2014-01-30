@@ -7,28 +7,28 @@
 !! Default
 !! 0: black
 *color0:  #222222
-*color8:  #222222
+*color8:  #555753
 !! 1: red
-*color1:  #9f6767
-*color9:  #9f6767
+*color1:  #CC0000
+*color9:  #EF2929
 !! 2: green
-*color2:  #92ac68
-*color10: #92ac68
+*color2:  #4E9A06
+*color10: #8AE234
 !! 3: yellow
-*color3:  #d0d293
-*color11: #d0d293
+*color3:  #C4A000
+*color11: #FCE94F
 !! 4: blue
-*color4:  #9aacc3
-*color12: #9aacc3
+*color4:  #3465A4
+*color12: #729FCF
 !! 5: magenta
 *color5:  #bb77a4
-*color13: #bb77a4
+*color13: #AD7FA8
 !! 6: cyan
 *color6:  #77bbb5
-*color14: #77bbb5
+*color14: #34E2E2
 !! 7: white
-*color7:  #777777
-*color15: #777777
+*color7:  #D3D7CF
+*color15: #EEEEEC
 !
 !!------------------------------------------------------------------------------
 !! u r x v t
@@ -44,3 +44,11 @@ URxvt*scrollColor:        #000000
 URxvt*.transparent: true
 ! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
 URxvt*.shading: 25
+
+! do not scroll with output
+URxvt*scrollTtyOutput: false
+
+! scroll back to the bottom on keypress
+URxvt*scrollTtyKeypress: true
+
+URxvt*saveLines: 65535
