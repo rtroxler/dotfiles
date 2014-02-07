@@ -9,8 +9,6 @@ set -f
 function uniq_linebuffered() {
     awk -W interactive '$0 != l { print ; l=$0 ; fflush(); }' "$@"
 }
-
-# If you want mpd songs
 function get_mpd_song() {
     # use mpc to get currently playing song, uppercase it
     song=$(mpc current -h $HOME/.mpdsock -f %title%)
@@ -65,10 +63,10 @@ herbstclient pad $monitor 18
         for i in "${TAGS[@]}" ; do
             case ${i:0:1} in
                 '#') # current tag
-                    echo -n "\u6\fr"
+                    echo -n "\u4\fr"
                     ;;
                 '+') # active on other monitor
-                    echo -n "\u2\fr"
+                    echo -n "\u6\fr"
                     ;;
                 ':')
                     echo -n "\ur\fr"
@@ -77,7 +75,7 @@ herbstclient pad $monitor 18
                     echo -n "\u1\f1"
                     ;;
                 *)
-                    echo -n "\ur\f2"
+                    echo -n "\ur\f4"
                     ;;
             esac
             echo -n "   ${i:1}   " | tr '[:lower:]' '[:upper:]'
@@ -99,7 +97,7 @@ herbstclient pad $monitor 18
         echo -n "\r\ur\fr\br"
         echo -n "$separator"
         echo -n "$date_day" | tr '[:lower:]' '[:upper:]'
-        echo -n " \f6"
+        echo -n " \f4"
         echo -n "$date_min  " | tr '[:lower:]' '[:upper:]'
         echo
         # wait for next event

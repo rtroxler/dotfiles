@@ -18,14 +18,14 @@
 *color3:  #C4A000
 *color11: #FCE94F
 !! 4: blue
-*color4:  #3465A4
-*color12: #729FCF
+*color4:  #204A87
+*color12: #3465A4
 !! 5: magenta
-*color5:  #bb77a4
-*color13: #AD7FA8
+*color5:  #CE5C00
+*color13: #F57900
 !! 6: cyan
-*color6:  #77bbb5
-*color14: #34E2E2
+*color6:  #89B6E2
+*color14: #46A4FF
 !! 7: white
 *color7:  #D3D7CF
 *color15: #EEEEEC
