@@ -3,9 +3,9 @@
 # this is a simple config for herbstluftwm
 
 function hc() {
-   # herbstclient "$@"
+   herbstclient "$@"
    # implement chaining here
-   cmds="$cmds , $@"
+  # cmds="$cmds , $@"
 }
 
 hc emit_hook reload
@@ -44,10 +44,13 @@ for i in ${!TAG_NAMES[@]} ; do
 done
 
 #add Monitors
-hc add_monitor 1440x900+0+0 "chat"
-hc add_monitor 1920x1080+1440+0 "shell"
-hc move_monitor 0 1440x900+0+0
+hc add_monitor 1920x1080+0+0 "chat"
+hc add_monitor 1920x1080+1920+0 "shell"
+hc move_monitor 0 1920x1080+0+0
 
+# Spacing
+hc set frame_gap -20
+hc set window_gap 20
 
 ##########################################################
 # Keybindings
@@ -93,7 +96,7 @@ hc keybind $Mod-comma move_index -1
 hc keybind $Mod-period move_index +1
 
 # resizing PANELS
-RESIZESTEP=0.05
+RESIZESTEP=0.025
 hc keybind $Mod-Alt-h resize left +$RESIZESTEP
 hc keybind $Mod-Alt-n resize down +$RESIZESTEP
 hc keybind $Mod-Alt-t resize up +$RESIZESTEP
@@ -122,6 +125,11 @@ hc keybind $Mod-Shift-n shift down
 hc keybind $Mod-Shift-t shift up
 hc keybind $Mod-Shift-s shift right
 
+
+# Sound keybindings for work
+hc keybind XF86AudioRaiseVolume spawn amixer set Master 5%+ > /dev/null
+hc keybind XF86AudioLowerVolume spawn amixer set Master 5%- > /dev/null
+hc keybind XXF86AudioMute spawn amixer set Master toggle
 
 ##########################################################
 # Colors
@@ -152,7 +160,7 @@ hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
 
 
 # CHAIN
-herbstclient chain $cmds&
+#herbstclient chain $cmds&
 
 ##########################################################
 # Panel
