@@ -16,6 +16,10 @@ set autoread
 " Set 7 lines to the cursor, when moving vertically using t, n
 set so=7
 
+
+"Pathogen for plugin stuff
+execute pathogen#infect()
+
 " For pasting data from outside application into vim.
 set pastetoggle=<F2>
 
@@ -43,6 +47,10 @@ set wildmenu            " Popup a window showing all matching command above comm
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Coding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"CtrlP stuff
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 set showmatch 		" show matching brackets.
 set matchtime=2         " the length of time to show matching paren.
 
@@ -68,13 +76,16 @@ nmap <leader>l :set list!<CR>
 set listchars=tab:➟\ ,eol:⤦
 
 " Toggle spell checking on and off with `,s`
-"let mapleader = ","
+let mapleader = ","
 nmap <silent> <leader>s :set spell!<CR>
  
 " set region to United States English
 set spelllang=en_us
 
 set number
+
+" for sudo editing
+command W w !sudo tee % > /dev/null
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -102,9 +113,18 @@ noremap _ ^
 noremap ` '
 noremap ' `
 
-" set 'ii' to Esc
-:imap ii <Esc>
+" set 'C-Space' to Esc
+:inoremap <C-@> <Esc>
 
 " delete whole words (like Ctrl - Backspace) with Ctrl - w
 :imap <C-BS> <C-W>
 
+"For CtrlP
+nnoremap <leader>fr :CtrlP<CR>
+nnoremap <leader>fb :CtrlPBuffer<CR>
+let g:ctrlp_prompt_mappings = {
+    \ 'PrtSelectMove("j")': ['<c-n>'],
+    \ 'PrtSelectMove("k")': ['<c-t>'],
+    \ 'PrtHistory(-1)':     ['<down>'],
+    \ 'PrtHistory(1)':      ['<up<'],
+    \ }
