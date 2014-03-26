@@ -15,7 +15,7 @@ hc emit_hook reload
 ##########################################################
 
 #Set background image
-feh --bg-fill ~/Images/walls/NNZUJrW.jpg
+feh --bg-fill ~/Images/walls/mountain.jpg
 
 # Read in xmodmap
 xmodmap ~/.Xmodmap
@@ -62,7 +62,7 @@ hc keybind $Mod-Control-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn urxvt 
-hc keybind $Mod-d spawn dmenu_run
+hc keybind $Mod-d spawn dmenu_run -i -nb '#1e1e1e' -nf '#78C7C7' -sb '#FFFF84' -sf '#1e1e1e'
 hc keybind $Mod-w spawn firefox
 hc keybind $Mod-Control-l spawn gnome-screensaver-command -l
 
@@ -129,7 +129,7 @@ hc keybind $Mod-Shift-s shift right
 # Sound keybindings for work
 hc keybind XF86AudioRaiseVolume spawn amixer set Master 5%+ > /dev/null
 hc keybind XF86AudioLowerVolume spawn amixer set Master 5%- > /dev/null
-hc keybind XXF86AudioMute spawn amixer set Master toggle
+hc keybind XF86AudioMute spawn amixer set Master toggle
 
 ##########################################################
 # Colors
@@ -138,7 +138,7 @@ hc set frame_border_active_color '#98AFC7'
 hc set frame_border_normal_color '#646D7E'
 hc set frame_bg_normal_color '#BD9768'
 hc set frame_bg_active_color '#424140'
-hc set frame_border_width 2
+hc set frame_border_width 0
 hc set window_border_width 2
 hc set window_border_normal_color '#848482'
 hc set window_border_active_color '#78C7C7'
