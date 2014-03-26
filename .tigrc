@@ -1,0 +1,4 @@
+set line-graphics = yes
+
+bind generic t previous
+bind generic n next
