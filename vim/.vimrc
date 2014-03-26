@@ -129,5 +129,5 @@ let g:ctrlp_prompt_mappings = {
     \ 'PrtHistory(1)':      ['<up<'],
     \ }
 
-"EasyMotion
+"EasyMotion (,w to search forward -- ,b to search back) 
 let g:EasyMotion_leader_key='<leader>'
