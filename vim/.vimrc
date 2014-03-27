@@ -34,11 +34,11 @@ set encoding=utf-8
 set fileencodings=utf-8,latin-1,chinese
 
 " colorscheme 
-colorscheme slate 
+colorscheme xoria256
 
 " User Interface
-set guifont=ProFontWindows:h9
-set guioptions-=T
+set guifont=DejaVu\ Sans\ Mono\ 9
+set guioptions=
 set ruler
 
 set wildmenu            " Popup a window showing all matching command above command line when autocomplete.
@@ -115,6 +115,7 @@ noremap ' `
 
 " set 'C-Space' to Esc
 :inoremap <C-@> <Esc>
+:inoremap <C-Space> <Esc>
 
 " delete whole words (like Ctrl - Backspace) with Ctrl - w
 :imap <C-BS> <C-W>
@@ -129,5 +130,6 @@ let g:ctrlp_prompt_mappings = {
     \ 'PrtHistory(1)':      ['<up<'],
     \ }
 
-"EasyMotion (,w to search forward -- ,b to search back) 
+"EasyMotion, ,w to search forward -- ,b to search back
 let g:EasyMotion_leader_key='<leader>'
+
