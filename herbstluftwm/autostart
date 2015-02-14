@@ -21,18 +21,18 @@ feh --bg-fill ~/Images/walls/mountain.jpg
 xmodmap ~/.Xmodmap
 
 #Shit for intellij
-wmname LG3D
+#wmname LG3D
 
 # remove all existing keybindings
 hc keyunbind --all
 
 # Read in monitor layout from arandr
-sh ~/.screenlayout/something.sh
+#sh ~/.screenlayout/something.sh
 
 # Start gnome-screensaver for lock screen
 gnome-screensaver &
 
-# Conky config file 
+# Conky config file
 # dzconky &
 
 # Tags
@@ -44,9 +44,9 @@ for i in ${!TAG_NAMES[@]} ; do
 done
 
 #add Monitors
-hc add_monitor 1920x1080+0+0 "chat"
-hc add_monitor 1920x1080+1920+0 "shell"
-hc move_monitor 0 1920x1080+0+0
+hc add_monitor 3200x1800+0+0 "chat"
+#hc add_monitor 1920x1080+1920+0 "shell"
+#hc move_monitor 0 1920x1080+0+0
 
 # Spacing
 hc set frame_gap -20
@@ -61,18 +61,18 @@ Mod=Mod4
 hc keybind $Mod-Control-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn urxvt 
+hc keybind $Mod-Return spawn xterm
 hc keybind $Mod-d spawn dmenu_run -i -nb '#1e1e1e' -nf '#78C7C7' -sb '#FFFF84' -sf '#1e1e1e'
 hc keybind $Mod-w spawn firefox
 hc keybind $Mod-Control-l spawn gnome-screensaver-command -l
 
 # Set 'asd/zxc' to goto tags 1-3/4-6, only in dvorak
 hc keybind $Mod-a use "chat"
-hc keybind $Mod-o use "shell" 
+hc keybind $Mod-o use "shell"
 hc keybind $Mod-e use "dev"
-hc keybind $Mod-apostrophe use "web" 
-hc keybind $Mod-q use "music" 
-hc keybind $Mod-j use "misc" 
+hc keybind $Mod-apostrophe use "web"
+hc keybind $Mod-q use "music"
+hc keybind $Mod-j use "misc"
 
 # Send application to tag # with F# (tags are zero-indexed)
 hc keybind $Mod-F1 move_index 0
@@ -146,7 +146,7 @@ hc set frame_bg_transparent 1
 hc set frame_gap 8
 
 ##########################################################
-# Rules 
+# Rules
 ##########################################################
 
 hc unrule -F

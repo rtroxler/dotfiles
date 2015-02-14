@@ -5,7 +5,9 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbynew"
+# ZSH_THEME="powerline"
+xrdb -merge ~/.Xresources
+source ~/.powerline_prompt.sh
 set -o ignoreeof
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
@@ -13,8 +15,8 @@ COMPLETION_WAITING_DOTS="true"
 
 # set term to xterm unless in tmux
 set -g xterm-keys on
-export TERM=xterm-256color
-[ -n "$TMUX" ] && export TERM=screen-256color
+# export TERM=xterm-256color
+[ -n "$TMUX" ] && export TERM=screen-256color-bce
 
 #FUCK UPDATES
 DISABLE_AUTO_UPDATE="true"
@@ -48,17 +50,25 @@ setopt transientrprompt
 bindkey -e
 #Vi Mode Keybindings
 #bindkey -v
-#bindkey -M vicmd '^r' history-incremental-search-backward
 #bindkey -M viins '^r' history-incremental-search-backward
 #bindkey -M viins '^ ' vi-cmd-mode
-#bindkey -M vicmd 't' history-search-backward
-#bindkey -M vicmd '_' beginning-of-line
-#bindkey -M vicmd 's' forward-char
-#bindkey -M vicmd 't' up-line-or-history
-#bindkey -M vicmd 'n' down-line-or-history
+bindkey '^ ' vi-cmd-mode
+bindkey ‘jj’ vi-cmd-mode
+bindkey -M vicmd '^r' history-incremental-search-backward
+bindkey -M vicmd 'k' history-search-backward
+bindkey -M vicmd '0' beginning-of-line
+bindkey -M vicmd 'l' forward-char
+bindkey -M vicmd 'k' up-line-or-history
+bindkey -M vicmd 'j' down-line-or-history
 #bindkey '^W' backward-kill-word
 
 export EDITOR='vi'
+
+function _backward_kill_default_word() {
+  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' zle backward-kill-word
+}
+zle -N backward-kill-default-word _backward_kill_default_word
+bindkey '\e=' backward-kill-default-word   # = is next to backspace
 
 
 #Path Variable
