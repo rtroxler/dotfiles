@@ -9,7 +9,6 @@ set history=100
 " let mapleader = " "
 map <space> <leader>
 map <space><space> <leader><leader>
-nmap <silent> <leader>vv :so ~/.vimrc<CR>
 
 " backspace key behavior
 set backspace=eol,start,indent
@@ -51,6 +50,7 @@ set pastetoggle=<F2>
 set ignorecase          " ignore case when searching
 set smartcase           " only works when ignorecase on
 set title
+
 
 """" INCSEARCH IS AWESOME
 map /  <Plug>(incsearch-forward)
@@ -111,7 +111,6 @@ if &term =~ '256color'
   set t_ut=
 endif
 
-hi Search       cterm=NONE ctermfg=236 ctermbg=LightBlue
 
 
 " no back up/swp files
@@ -127,7 +126,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp   " store swap files here
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 set showmatch 		" show matching brackets.
-set matchtime=2         " the length of time to show matching paren.
+set matchtime=1         " the length of time to show matching paren.
 
 syntax on
 filetype plugin indent on
@@ -153,12 +152,13 @@ set autowrite		" Automatically save before commands like :next and :make
 "nmap <leader>l :set list!<CR>
 
 " Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:➟\ ,eol:¬
-
+set list
+set listchars=nbsp:∘,tab:➟\ ,trail:∘
 
 " set region to United States English
 set spelllang=en_us
 
+set relativenumber
 set number
 
 " for sudo editing
@@ -208,30 +208,48 @@ nnoremap <leader>gb :Gblame<CR>
 :vnoremap < <gv
 :vnoremap > >gv
 
-
 " Tab Tab to cycle through vim panes
 map <Tab><Tab> <C-W>w
 
 "set jk to Esc
 :inoremap jk <Esc>
+imap <c-c> <esc>
 
 let g:multi_cursor_quit_key='<Esc>'
 
 " delete whole words (like Ctrl - Backspace) with Ctrl - w
 :imap <C-BS> <C-W>
+imap <c-j> =><space>
 
+" Complete lines
+:inoremap <C-d> <C-x><C-l>
+
+" set Y to same as D
+nnoremap Y  y$
 " [S]plit line (sister to [J]oin lines)
 " cc still substitutes the line like S would
 nnoremap S i<CR><Esc>^mwgk:silent! s/\v +$//<CR>:noh<CR>
 " switch to last buffer, like alt+tab
 nnoremap <BS> :b#<CR>
+
 nnoremap gl :bn<CR>
 nnoremap gh :bp<CR>
-nnoremap gk :Bdelete<CR>
+nnoremap gx :Bdelete<CR>
 
-nnoremap <leader>gr <Plug>GitGutterRevertHunk
-nnoremap <leader>gs <Plug>GitGutterStageHunk
-nnoremap <leader>gp <Plug>GitGutterPreviewHunk
+nnoremap <leader>vv :e ~/.vimrc<CR>
+" change this, it's screwing with my search
+
+"Rails projects have database.yml in .gitignore so CtrlP won't find them
+"I could probably add them to CtrlP manually, but for now this works
+nnoremap <leader>vd :e config/database.yml<cr>
+
+nnoremap <leader>vg :e ~/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems<CR>
+
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+nmap <leader>gr <Plug>GitGutterRevertHunk
+nmap <leader>gs <Plug>GitGutterStageHunk
+nmap <leader>gp <Plug>GitGutterPreviewHunk
 
 "For CtrlP
 set tags=/home/rtroxler/code/fms/tags
@@ -285,9 +303,8 @@ autocmd BufReadPost *
   ".gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
-let g:ctrlp_match_window_bottom   = 0
-let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_match_window = 'max:20,results:50'
 
 
 " bind \ (backward slash) to grep shortcut
@@ -329,6 +346,8 @@ let &t_SI .= "\<Esc>[4 q"
 " solid block
 let &t_EI .= "\<Esc>[2 q"
 
+:hi Search ctermfg=NONE ctermbg=NONE cterm=underline
+:hi MatchParen cterm=NONE ctermbg=green ctermfg=blue
 
 """"""""""""""""""""""""""""""
 """" Session management """"""
@@ -380,10 +399,4 @@ endfunc
 " So there isn't always a netrw buffer left open
 autocmd FileType netrw setl bufhidden=wipe
 
-
-"Hardtime to get me to use easymotion more
-let g:hardtime_default_on = 1
-let g:hardtime_showmsg = 1
-let g:hardtime_ignore_quickfix = 1
-let g:hardtime_maxcount = 4
 nnoremap <F3> :HardTimeToggle<CR>

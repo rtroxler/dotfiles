@@ -51,9 +51,7 @@ bindkey -e
 #Vi Mode Keybindings
 #bindkey -v
 #bindkey -M viins '^r' history-incremental-search-backward
-#bindkey -M viins '^ ' vi-cmd-mode
-bindkey '^ ' vi-cmd-mode
-bindkey ‘jj’ vi-cmd-mode
+bindkey '^[' vi-cmd-mode
 bindkey -M vicmd '^r' history-incremental-search-backward
 bindkey -M vicmd 'k' history-search-backward
 bindkey -M vicmd '0' beginning-of-line
@@ -61,6 +59,7 @@ bindkey -M vicmd 'l' forward-char
 bindkey -M vicmd 'k' up-line-or-history
 bindkey -M vicmd 'j' down-line-or-history
 #bindkey '^W' backward-kill-word
+export KEYTIMEOUT=1
 
 export EDITOR='vi'
 
@@ -70,6 +69,11 @@ function _backward_kill_default_word() {
 zle -N backward-kill-default-word _backward_kill_default_word
 bindkey '\e=' backward-kill-default-word   # = is next to backspace
 
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[white]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
+    zle reset-prompt
+}
 
 #Path Variable
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/home/rtroxler/bin
