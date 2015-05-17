@@ -5,9 +5,9 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="powerline"
+ZSH_THEME="minimal"
 xrdb -merge ~/.Xresources
-source ~/.powerline_prompt.sh
+#source ~/.powerline_prompt.sh
 set -o ignoreeof
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
@@ -70,10 +70,20 @@ zle -N backward-kill-default-word _backward_kill_default_word
 bindkey '\e=' backward-kill-default-word   # = is next to backspace
 
 function zle-line-init zle-keymap-select {
-    VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[white]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
+    VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[black]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
     RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
     zle reset-prompt
 }
+
+# provide tab complete to intake
+_intake_complete() {
+  local word completions
+  word="$1"
+  completions="$(intake food_complete "${word}")"
+  reply=( "${(f)completions}" )
+}
+
+compctl -f -K _intake_complete intake ate
 
 #Path Variable
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/home/rtroxler/bin
