@@ -1,0 +1,140 @@
+! LIGHT
+!*background: #EEEEEE
+!*foreground: #000000
+! --- special colors ---
+! DARK
+!*background: #303030
+!*foreground: #b2b2b2
+! ! --- standard colors --- intensityStyle: true
+! black
+!*color0: #000000
+!! bright_black
+!!*color8: #454545
+!*color8: #304050 Atom color
+
+!! red
+!! Dark
+!*color1: #ff4c4c
+!! Light
+!!XTerm*color1: #ff4c4c
+!! bright_red
+!*color9: #dd425c
+
+!! green
+!! Dark
+!*color2: #32d632
+!! bright_green
+!*color10: #5cdd42
+
+!! yellow
+!*color3: #a08a1d
+!! bright_yellow
+!*color11: #ddc342
+!! dark blue + bright blue
+!*color4:  #5187d6
+!*color12: #00B2EE
+!! magenta
+!*color5: #8a1da0
+!! bright_magenta
+!*color13: #c342dd
+!! cyan
+!*color6: #1da08a
+!! bright_cyan
+!*color14: #42ddc3
+!! white
+!*color7: #b2b2b2
+!! bright_white
+!*color15: #fafafa
+!
+! solarized
+#include ".Xresources.d/solarized"
+! Atom background
+!#include ".Xresources.d/atom-term"
+
+! ! ------------------------------------------------------------------------------
+! ! --- end of terminal colors section -------------------------------------------
+! ! ------------------------------------------------------------------------------
+
+
+!*fading: 25
+XTerm*faceName: Sauce Code Powerline Regular:antialias=false
+XTerm*font: Sauce Code Powerline Regular:antialias=false
+XTerm*dynamicColors:      true
+XTerm*faceSize:8
+XTerm*boldMode: false
+XTerm*allowBoldFonts: true
+
+XTerm*scrollBar: false
+!XTerm*saveLines: 100000
+XTerm*VT100.geometry: 140x50+2000+100
+XTerm*loginShell: true
+!XTerm*backarrowKey: false
+XTerm*backspacekey: ^?
+!XTerm*deleteIsDEL: false
+!XTerm*deletekey: \e[3~
+XTerm*pointerShape: left_ptr
+
+!XTerm*openIm: false
+XTerm*utf8: 1
+XTerm*toolBar: false
+XTerm.VT100.charClass: 33:48,37:48,45-47:48,58:48,64:48
+XTerm.VT100.eightBitInput: false
+XTerm.VT100.metaSendsEscape: true
+XTerm.VT100.Translations: #override \n\
+    Shift<Key>Prior: scroll-back(1,page) \n\
+    Shift<Key>Next: scroll-forw(1,page)
+
+XTerm*termName: xterm-256color
+
+XTerm*selectToClipboard: true
+! Bells
+XTerm*visualbell: true
+XTerm*bellIsUrgent: true
+
+
+! URxvt
+URxvt*perl-ext-common: default,matcher,clipboard
+
+! Tabs!
+! Add tabbedex to perl-ext-common
+!  For now, neovim seg faults way too often to use, but eventually..
+
+!URxvt.tabbed.tabbar-fg: 115
+!URxvt.tabbed.tabbar-bg: 240
+!URxvt.tabbed.tab-fg: 75
+!URxvt.tabbed.tab-bg: 240
+!URxvt.tabbed.autohide: true
+!URxvt.tabbed.title: false
+
+!URxvt.keysym.Control-t: perl:tabbedex:new_tab
+!URxvt.keysym.Control-Tab: perl:tabbedex:next_tab
+!URxvt.keysym.Control-Shift-Tab: perl:tabbedex:prev_tab
+!URxvt.keysym.Meta-1: perl:tabbedex:goto_tab_1
+!URxvt.keysym.Meta-2: perl:tabbedex:goto_tab_2
+!URxvt.keysym.Meta-3: perl:tabbedex:goto_tab_3
+!URxvt.keysym.Meta-4: perl:tabbedex:goto_tab_4
+!URxvt.keysym.Meta-5: perl:tabbedex:goto_tab_5
+
+!URxvt*eightBitInput: true
+
+URxvt.searchable-scrollback: CM-s
+URXvt*eightBitInput: true
+URxvt*saveLines: 50
+URxvt*metaSendsEscape: true
+URxvt*cursorBlink: false
+URxvt*utf8: 1
+URxvt*scrollBar: false
+URxvt*scrollBar_right: false
+URxvt*scrollBar_floating: false
+!URxvt*faceSize:8
+! Inconsolata is wide, letterSpace to -2 looks decent
+URxvt.font: xft:Droid Sans Mono for Powerline:size=8:hinting=True;antialias:True
+URxvt*letterSpace: -2
+! do not scroll with output
+URxvt*scrollTtyOutput: false
+
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt*scrollWithBuffer: true
+
+! scroll back to the bottom on keypress
+URxvt*scrollTtyKeypress: true
