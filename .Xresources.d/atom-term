@@ -1,0 +1,46 @@
+! ! --- simple colors --- intensityStyle: false (terminal only uses first 8, so can set last 8 to other fun things (vim colorscheme colors -- Atom?)
+! Atom background
+*background: #304050
+! black
+*color0: #454545
+!! bright_black
+!!*color8: #454545
+*color8: #304050
+
+!! red
+!! Dark
+*color1: #CD5C5C
+!! Light
+!XTerm*color1: #ff4c4c
+!! bright_red
+*color9: #ff4c4c
+
+!! green
+!! Dark
+*color2: #70d080
+!! bright_green
+*color10: #5cdd42
+
+!! yellow
+*color3: #f6f3e8
+!! bright_yellow
+*color11: #ddc342
+!! dark blue + bright blue
+*color4:  #00B2EE
+*color12: #6699D0
+! maybe flip these blues, this bright blue is really nice
+
+!! magenta
+*color5: #c342dd
+!! bright_magenta
+!*color13: #
+!! cyan
+*color6: #42ddc3
+!! bright_cyan
+*color14: #203040
+!! white
+*color7: #e8ecf0
+!! bright_white
+*color15: #8090a0
+
+*intensityStyle: false
