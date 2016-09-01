@@ -5,17 +5,17 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="simple-trox"
 set -o ignoreeof
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
-COMPLETION_WAITING_DOTS="true"
+#COMPLETION_WAITING_DOTS="true"
 
 # set term to xterm unless in tmux
-set -g xterm-keys on
+#set -g xterm-keys on
 # export TERM=xterm-256color
-[ -n "$TMUX" ] && export TERM=screen-256color-bce
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+#[ -n "$TMUX" ] && export TERM=screen-256color-bce
+#export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 #FUCK UPDATES
 DISABLE_AUTO_UPDATE="true"
@@ -42,8 +42,6 @@ unsetopt correct_all
 #Tmux window naming not reset
 DISABLE_AUTO_TITLE=true
 
-#Remove old Right prompts (insert, etc)
-setopt transientrprompt
 
 #emacs
 #bindkey -e
@@ -72,30 +70,32 @@ export KEYTIMEOUT=1
   #done
 #done
 
-function _backward_kill_default_word() {
-  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' zle backward-kill-word
-}
-zle -N backward-kill-default-word _backward_kill_default_word
-bindkey '\e=' backward-kill-default-word   # = is next to backspace
+#function _backward_kill_default_word() {
+  #WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' zle backward-kill-word
+#}
+#zle -N backward-kill-default-word _backward_kill_default_word
+#bindkey '\e=' backward-kill-default-word   # = is next to backspace
 
-function zle-line-init zle-keymap-select {
-    VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[black]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
-    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
-    zle reset-prompt
-}
+#function zle-line-init zle-keymap-select {
+    #VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[black]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
+    #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
+    #zle reset-prompt
+#}
 
-# Set current BASE16 color (pretty colors)
-#  source $HOME/.zsh-current-color
+## Set current BASE16 color (pretty colors)
+##  source $HOME/.zsh-current-color
 
-#Path Variable
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:$HOME/bin:$HOME/.rbenv/bin:$HOME/misc/nim-0.13.0/bin:$HOME/.cargo/bin
+##Path Variable
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:$HOME/bin:$HOME/.rbenv/bin:$HOME/.cargo/bin
 
 eval "$(rbenv init -)"
 
 export NVM_DIR="/Users/rtroxler/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+##[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 ulimit -n 2560
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=1'
+
+# For Elixir/Erlang
 . $HOME/.asdf/asdf.sh

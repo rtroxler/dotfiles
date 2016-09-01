@@ -16,12 +16,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'zhaocai/GoldenView.Vim'
+"Plug 'zhaocai/GoldenView.Vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf.vim' | Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
+Plug 'rking/ag.vim'
 Plug 'vimwiki/vimwiki'
 Plug 'ddrscott/vim-side-search'
 Plug 'henrik/vim-qargs'
+Plug 'henrik/vim-indexed-search'
+Plug 'danchoi/ruby_bashrockets.vim'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Language specific
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -71,6 +75,8 @@ set smartindent
 set ignorecase
 set smartcase
 
+set number
+
 " default substitute and others to global
 set gdefault
 
@@ -81,37 +87,7 @@ set listchars=nbsp:∘,tab:➟\ ,trail:∘
 
 " TRUE COLOR / 24Bit / 16M
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-
-" User highlights for statusline
-"""""""
-" Color
-"""""""
-"autocmd ColorScheme *
-"      \  highlight  User1    ctermfg=4     ctermbg=19                  |
-"      \  highlight  User2    ctermfg=2     ctermbg=19                  |
-"      \  highlight  User3    ctermfg=9     ctermbg=19    cterm=bold    |
-"      \  highlight  User4    ctermfg=1     ctermbg=19                  |
-"      \  highlight  User5    ctermfg=10    ctermbg=19    cterm=bold    |
-"      \  highlight  User6    ctermfg=1     ctermbg=19    cterm=bold    |
-"      \  highlight  User7    ctermfg=7     ctermbg=19    cterm=bold    |
-"      \  highlight  Search   ctermfg=18    ctermbg=6     cterm=NONE    |
-"      \  highlight  Error    ctermfg=9     ctermbg=none  cterm=italic  |
-"      \  highlight  Comment                              cterm=italic
-
-
-""""""""""""
-" Statusline
-""""""""""""
-" COLORED
-"set statusline=%t       "tail of the filename
-" set statusline+=%1*%{expand('%:h')}/               " relative path to file's directory
-" set statusline+=%5*%t%*
-" set statusline+=\ %3*%m%*     "modified flag
-" set statusline+=%=      "left/right separator
-" set statusline+=%7*%{fugitive#statusline()}
-" set statusline+=\ %y      "filetype
-" set statusline+=\ %2*%L\ lines   "cursor line/total lines
-" set statusline+=\ %1*%P    "percent through file
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 " NONCOLORED
  set statusline+=%{expand('%:h')}/               " relative path to file's directory
@@ -123,26 +99,18 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
  set statusline+=\ %L\ lines   "cursor line/total lines
  set statusline+=\ %P    "percent through file
 
-" Base16 things
-"colorscheme base16-grayscale
 
 set background=dark
 colorscheme darktooth
 "colorscheme Oldlace
+"colorscheme base16-grayscale
+
+hi Search guibg=#f9dc7d
 
 
 """"""""""""""""""""""""
 " Key mappings
 """"""""""""""""""""""""
-
-tnoremap <C-h> <C-\><C-n><C-w>h
-"tnoremap <C-j> <C-\><C-n><C-w>j
-"tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 nnoremap <right> <C-w><
 nnoremap <left> <C-w>>
@@ -214,7 +182,7 @@ nnoremap <leader>/ :Ag<cr>
 nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 
-map <leader><leader> :FZF<CR>
+"map <leader><leader> :FZF<CR>
 map <C-p> :FZF<CR>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>l :BLines<cr>
@@ -325,22 +293,6 @@ endfunction
 
 
 command! W w !sudo tee % > /dev/null
-
-""""""""""""""""""""""""""""""""""""
-"" Other little hacks
-""""""""""""""""""""""""""""""""""""
-
-" solid underscore
-"let &t_SI .= "\<Esc>[4 q"
-" blinking block
-let &t_EI .= "\<Esc>[1 q"
-
-" solid line
-"let &t_EI .= "\<Esc>[6 q"
-
-"blinking line
-let &t_SI .= "\<Esc>[5 q"
-"let &t_EI .= "\<Esc>[5 q"
 
 """""""""""""""""""""""""""""""""""
 """"""""""""""" FZF """""""""""""""
