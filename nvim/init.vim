@@ -16,28 +16,29 @@ Plug 'tpope/vim-fugitive'
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
-"Plug 'zhaocai/GoldenView.Vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf.vim' | Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
-Plug 'rking/ag.vim'
+"Plug 'rking/ag.vim'
 Plug 'vimwiki/vimwiki'
-Plug 'ddrscott/vim-side-search'
 Plug 'henrik/vim-qargs'
-Plug 'henrik/vim-indexed-search'
 Plug 'danchoi/ruby_bashrockets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 " Language specific
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript.jsx' }
 Plug 'rtroxler/vim-jsx', { 'for': 'javascript.jsx' }
+Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 
 " Colors
 Plug 'w0ng/vim-hybrid'
+Plug 'morhetz/gruvbox'
+
+Plug 'jreybert/vimagit'
+
 
 call plug#end()
 
@@ -46,7 +47,7 @@ call plug#end()
 """"""""""
 set noswapfile
 
-set cul
+set nocul
 
 set autowrite
 set hidden
@@ -86,11 +87,13 @@ set list
 set listchars=nbsp:∘,tab:➟\ ,trail:∘
 
 " TRUE COLOR / 24Bit / 16M
+set termguicolors
+"
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 " NONCOLORED
- set statusline+=%{expand('%:h')}/               " relative path to file's directory
+ set statusline=%{expand('%:h')}/               " relative path to file's directory
  set statusline+=%t%*
  set statusline+=\ %m%*     "modified flag
  set statusline+=%=      "left/right separator
@@ -100,12 +103,17 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
  set statusline+=\ %P    "percent through file
 
 
-set background=dark
-colorscheme darktooth
+"colorscheme darktooth
 "colorscheme Oldlace
+"colorscheme despacio
 "colorscheme base16-grayscale
+colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_contrast_light = 'soft'
 
-hi Search guibg=#f9dc7d
+set background=dark
+
+"hi Search guibg=#f9dc7d
 
 
 """"""""""""""""""""""""
@@ -124,7 +132,6 @@ nmap <leader>p "+p
 nmap <leader>P "+P
 vmap <leader>p "+p
 vmap <leader>P "+P
-nnoremap <leader>yf :let @*="bin/rake test TEST=". expand("%")<cr>:echo "Copied file name to clipboard"<cr>
 
 " map to gj/ gk for wrapped line
 nnoremap j gj
@@ -132,7 +139,16 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" Keep cursor centered when searching
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+
+
 nmap <leader>q <C-W>q
+nmap <leader>= <C-W>=
+nmap <leader>- <C-W>_
 
 " conventional shifting
 vnoremap < <gv
@@ -141,7 +157,8 @@ vnoremap > >gv
 " switch to last buffer
 nnoremap <BS> :b#<CR>
 
-nnoremap <leader>vv :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>vv :e $MYVIMRC<CR>
+nnoremap <leader>sv :so $MYVIMRC<CR>
 
 " To split a hash (or anything else for that matter) by comma
 map <leader>, f,l\j
@@ -149,40 +166,42 @@ map <leader>, f,l\j
 "Opposite of J
 nnoremap \ i<CR><Esc>^mwgk:silent! s/\v +$//<CR>:noh<CR>
 
-nmap <silent> <leader>k  <Plug>GoldenViewSplit
-
 nmap <leader>; <Plug>NERDCommenterToggle
 xmap <leader>; <Plug>NERDCommenterToggle
 
+ "To set min winwidth, vertical splits will resize to atleast be 70/60/50% width
+nnoremap <C-w>7 <C-w>j:let &winwidth = &columns * 7 / 10<cr>
+nnoremap <C-w>6 <C-w>j:let &winwidth = &columns * 6 / 10<cr>
+nnoremap <C-w>5 <C-w>j:let &winwidth = &columns * 5 / 10<cr>
 
+" Close buffer but keep window
+nnoremap <leader>x :bp \| :bd #<CR>
+
+"""""""""""""""
+" Plugin things
+"""""""""""""""
+
+" Gitgutter
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 nmap <leader>gr <Plug>GitGutterRevertHunk
-nmap <leader>gs <Plug>GitGutterStageHunk
+"nmap <leader>gs <Plug>GitGutterStageHunk
 nmap <leader>gp <Plug>GitGutterPreviewHunk
 
-" run set test lib
-nnoremap <silent> <leader>ta :call neoterm#test#run('all')<cr>
-nnoremap <silent> <leader>tf :call neoterm#test#run('file')<cr>
-nnoremap <silent> <leader>ts :call neoterm#test#run('current')<cr>
-nnoremap <silent> <leader>tr :call neoterm#test#rerun()<cr>
-nnoremap <silent> <leader>tc :call neoterm#clear()<cr>
-nnoremap <silent> <leader>tx :call neoterm#close()<cr>
-
+" Fugitive
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
-nnoremap <leader>gs :Gst<CR>
 nnoremap <leader>gr :GitGutterRevertHunk<CR>
 
-nnoremap <leader>x :bp \| :bd #<CR>
+" Magit
+nnoremap <leader>gs :Magit<CR>
 
 " Searching things
-nnoremap <leader>/ :Ag<cr>
-nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <leader>a :Ack!<space>
+nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>
+let g:ack_use_dispatch = 1
 
-
-"map <leader><leader> :FZF<CR>
 map <C-p> :FZF<CR>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>l :BLines<cr>
@@ -192,21 +211,10 @@ nnoremap <leader>T :Tags<cr>
 
 nnoremap - :Explore<cr>
 
-
-"""""""""""""""
-" Plugin things
-"""""""""""""""
-
 let g:delimitMate_expand_cr = 2
 let g:delimitMate_expand_space = 1
-let g:goldenview__enable_default_mapping = 0
 
 let g:neoterm_position = 'vertical'
-
-" For vim-ruby
-let ruby_no_expensive=1
-
-"let g:gitgutter_sign_column_always = 1
 
 " nvim terminal scrollback
 let g:terminal_scrollback_buffer_size = 100000
@@ -221,13 +229,24 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
+" Tmux send keys
+" ts => tmux send-keys -t right 'args' C-m
+"nnoremap <leader>it :!tsr bundle exec ruby -Itest <C-R>%<CR>
+nnoremap <leader>tf :!tmux send-keys -t right 'bin/rake test TEST="<C-R>%"' C-m<CR>
+"nnoremap <leader>rt :!ts bin/rake test<CR> " I don't wanna map over <leader>r
+
+" Copy the test to the clipboard
+nnoremap <leader>yf :let @*="bin/rake test TEST=". expand("%")<cr>:echo "Copied file name to clipboard"<cr>
+
 """"""""""""""""""""""""""""""""""""
 "" Autocmds
 """"""""""""""""""""""""""""""""""""
 augroup ruby_things
   autocmd!
   autocmd FileType ruby :iabbrev bp binding.pry
+  autocmd FileType ruby :iabbrev glbd GeneralLedgerByDayReport.prettify facility: facility
   autocmd FileType ruby :iabbrev rap Rails.logger.ap
+  autocmd FileType ruby :iabbrev ra* Rails.logger.ap "********************************************************************************"
   autocmd FileType ruby :set re=1
   autocmd Filetype ruby :setlocal iskeyword+=_
   " Highlight in red any binding.prys
@@ -274,13 +293,13 @@ augroup other
   autocmd FileType netrw setl bufhidden=wipe
 augroup END
 
-aug CursorLine
-    autocmd!
-    autocmd VimEnter * setl cursorline
-    autocmd WinEnter * setl cursorline
-    autocmd BufWinEnter * setl cursorline
-    autocmd WinLeave * setl nocursorline
-aug END
+"aug CursorLine
+    "autocmd!
+    "autocmd VimEnter * setl cursorline
+    "autocmd WinEnter * setl cursorline
+    "autocmd BufWinEnter * setl cursorline
+    "autocmd WinLeave * setl nocursorline
+"aug END
 
 autocmd BufWinEnter,WinEnter term://* startinsert
 

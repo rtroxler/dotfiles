@@ -86,16 +86,25 @@ export KEYTIMEOUT=1
 ##  source $HOME/.zsh-current-color
 
 ##Path Variable
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:$HOME/bin:$HOME/.rbenv/bin:$HOME/.cargo/bin
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:$HOME/bin:$HOME/.rbenv/bin:$HOME/.cargo/bin:/usr/local/lib/apache-maven-3.3.9/bin:$PATH
 
 eval "$(rbenv init -)"
 
-export NVM_DIR="/Users/rtroxler/.nvm"
+export MYVIMRC="~/.config/nvim/init.vim"
+export NVM_DIR="/Users/ryantroxler/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 ##[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 ulimit -n 2560
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=1'
 
+# --files: List files that would be searched but do not search
+# --no-ignore: Do not respect .gitignore, etc...
+# --hidden: Search hidden files and folders
+# --follow: Follow symlinks
+# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+
 # For Elixir/Erlang
 . $HOME/.asdf/asdf.sh
+#export JAVA_HOME=`/usr/libexec/java_home`
