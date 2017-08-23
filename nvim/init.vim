@@ -6,38 +6,38 @@ let mapleader = "\<space>"
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'mileszs/ack.vim'
-Plug 'kassio/neoterm'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/fzf.vim' | Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
-"Plug 'rking/ag.vim'
-Plug 'vimwiki/vimwiki'
 Plug 'henrik/vim-qargs'
 Plug 'danchoi/ruby_bashrockets.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'jreybert/vimagit'
+Plug 'romainl/vim-qf'
+Plug 'justinmk/vim-sneak'
+Plug 'mtth/scratch.vim'
 
 " Language specific
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript.jsx' }
 Plug 'rtroxler/vim-jsx', { 'for': 'javascript.jsx' }
 Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 
 " Colors
-Plug 'w0ng/vim-hybrid'
-Plug 'morhetz/gruvbox'
-
-Plug 'jreybert/vimagit'
+Plug 'rakr/vim-two-firewatch'
+Plug 'arcticicestudio/nord-vim'
+Plug 'noah/vim256-color'
 
 
 call plug#end()
@@ -65,6 +65,8 @@ set nowrap "Line wrapping
 
 set iskeyword+=_,$,@,%,#,-  " don't linebreak when encounter these characters.
 
+set clipboard+=unnamed
+
 set tabstop=2		" The number of spaces count for a TAB.
 set softtabstop=2	" The number of spaces inserted when typing TAB. If not expandtab, type TAB twice, will get one TAB.
 set shiftwidth=2	" The number of spaces when auto-indent.
@@ -76,7 +78,25 @@ set smartindent
 set ignorecase
 set smartcase
 
+" Folding
+function! RubyMethodFold(line)
+  let line_is_method_or_end = synIDattr(synID(a:line,1,0), 'name') == 'rubyMethodBlock'
+  let line_is_def = getline(a:line) =~ '\s*def '
+  return line_is_method_or_end || line_is_def
+endfunction
+
+set foldexpr=RubyMethodFold(v:lnum)
+"let g:ruby_fold = 1
+"let g:ruby_foldable_groups = 'def do'
+set foldlevel=10
+set foldlevelstart=10
+set foldclose=all
+"set foldnestmax=1
+"
+
 set number
+
+set mouse=a
 
 " default substitute and others to global
 set gdefault
@@ -87,43 +107,50 @@ set list
 set listchars=nbsp:∘,tab:➟\ ,trail:∘
 
 " TRUE COLOR / 24Bit / 16M
-set termguicolors
-"
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-" NONCOLORED
- set statusline=%{expand('%:h')}/               " relative path to file's directory
- set statusline+=%t%*
- set statusline+=\ %m%*     "modified flag
- set statusline+=%=      "left/right separator
- set statusline+=%{fugitive#statusline()}
- set statusline+=\ %y      "filetype
- set statusline+=\ %L\ lines   "cursor line/total lines
- set statusline+=\ %P    "percent through file
+"set termguicolors
+set t_Co=256
 
 
+set statusline=
+set statusline+=%f
+set statusline+=\ %m     "modified flag
+set statusline+=%=      "left/right separator
+set statusline+=%{fugitive#statusline()}
+set statusline+=\ %y      "filetype
+set statusline+=\ %L\ lines   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+
+ "colorscheme ayu
+"colorscheme nord
+"colorscheme two-firewatch
+"let g:two_firewatch_italics=1
 "colorscheme darktooth
 "colorscheme Oldlace
 "colorscheme despacio
-"colorscheme base16-grayscale
-colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'soft'
-let g:gruvbox_contrast_light = 'soft'
+"colorscheme base16-green-screen
+"colorscheme n0tch2k
+"colorscheme base16-eighties
 
 set background=dark
-
-"hi Search guibg=#f9dc7d
-
+syntax on
 
 """"""""""""""""""""""""
 " Key mappings
 """"""""""""""""""""""""
 
+
+" Terminal mappings handled down below
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 nnoremap <right> <C-w><
 nnoremap <left> <C-w>>
 
 nnoremap <leader>n :noh<CR>
+
+nnoremap <leader>d :Dispatch<space>
 
 "Use leader y/p/d to copy/paste/cut to system clipboard
 vmap <leader>y "+y
@@ -145,6 +172,9 @@ nnoremap N Nzz
 nnoremap * *zz
 nnoremap # #zz
 
+" Tab things
+nnoremap <leader>tn :tabnew<cr>
+nnoremap <leader>tq :tabclose<cr>
 
 nmap <leader>q <C-W>q
 nmap <leader>= <C-W>=
@@ -156,6 +186,7 @@ vnoremap > >gv
 
 " switch to last buffer
 nnoremap <BS> :b#<CR>
+imap <C-c> <ESC>
 
 nnoremap <leader>vv :e $MYVIMRC<CR>
 nnoremap <leader>sv :so $MYVIMRC<CR>
@@ -178,6 +209,13 @@ nnoremap <C-w>5 <C-w>j:let &winwidth = &columns * 5 / 10<cr>
 nnoremap <leader>x :bp \| :bd #<CR>
 
 """""""""""""""
+" Color things
+"""""""""""""""
+let ruby_no_expensive = 1 " THIS IS SUPER IMPORTANT
+nnoremap <leader>c = :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+
+
+"""""""""""""""
 " Plugin things
 """""""""""""""
 
@@ -194,13 +232,23 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gr :GitGutterRevertHunk<CR>
 
+" Dispatch gcc
+command! GccCurrent Dispatch gcc %:p -o %:r && ./%:r
+
 " Magit
 nnoremap <leader>gs :Magit<CR>
+let g:magit_default_fold_level = 2
+
+" Scratch
+let g:scratch_persistence_file = '/Users/ryantroxler/.scratch.vim'
+let g:scratch_insert_autohide = 0
+let g:scratch_height = 15
 
 " Searching things
 nnoremap <leader>a :Ack!<space>
 nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>
 let g:ack_use_dispatch = 1
+
 
 map <C-p> :FZF<CR>
 nnoremap <leader>b :Buffers<cr>
@@ -217,7 +265,7 @@ let g:delimitMate_expand_space = 1
 let g:neoterm_position = 'vertical'
 
 " nvim terminal scrollback
-let g:terminal_scrollback_buffer_size = 100000
+let g:terminal_scrollback_buffer_size = 2000
 
 let g:jsx_ext_required = 0
 
@@ -232,7 +280,7 @@ endif
 " Tmux send keys
 " ts => tmux send-keys -t right 'args' C-m
 "nnoremap <leader>it :!tsr bundle exec ruby -Itest <C-R>%<CR>
-nnoremap <leader>tf :!tmux send-keys -t right 'bin/rake test TEST="<C-R>%"' C-m<CR>
+"nnoremap <leader>tf :!tmux send-keys -t right 'bin/rake test TEST="<C-R>%"' C-m<CR>
 "nnoremap <leader>rt :!ts bin/rake test<CR> " I don't wanna map over <leader>r
 
 " Copy the test to the clipboard
@@ -244,14 +292,14 @@ nnoremap <leader>yf :let @*="bin/rake test TEST=". expand("%")<cr>:echo "Copied 
 augroup ruby_things
   autocmd!
   autocmd FileType ruby :iabbrev bp binding.pry
-  autocmd FileType ruby :iabbrev glbd GeneralLedgerByDayReport.prettify facility: facility
+  autocmd FileType ruby :iabbrev glbd GLBD.prettify facility: facility
   autocmd FileType ruby :iabbrev rap Rails.logger.ap
   autocmd FileType ruby :iabbrev ra* Rails.logger.ap "********************************************************************************"
   autocmd FileType ruby :set re=1
   autocmd Filetype ruby :setlocal iskeyword+=_
   " Highlight in red any binding.prys
-  au BufEnter *.rb syn match error contained "\<binding.pry\>"
-  au BufEnter *.rb syn match error contained "\<Rails.logger.ap\>"
+  autocmd BufEnter *.rb syn match error contained "\<binding.pry\>"
+  autocmd BufEnter *.rb syn match error contained "\<Rails.logger.ap\>"
 augroup END
 
 augroup misc_filetypes
@@ -301,7 +349,27 @@ augroup END
     "autocmd WinLeave * setl nocursorline
 "aug END
 
-autocmd BufWinEnter,WinEnter term://* startinsert
+" Window navigation function
+" Make ctrl-h/j/k/l move between windows and auto-insert in terminals
+"func! s:mapMoveToWindowInDirection(direction)
+    "func! s:maybeInsertMode(direction)
+        "stopinsert
+        "execute "wincmd" a:direction
+
+        "if &buftype == 'terminal'
+            "startinsert!
+        "endif
+    "endfunc
+
+    "execute "tnoremap" "<silent>" "<C-" . a:direction . ">"
+                "\ "<C-\\><C-n>"
+                "\ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
+    "execute "nnoremap" "<silent>" "<C-" . a:direction . ">"
+                "\ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
+"endfunc
+"for dir in ["h", "j", "l", "k"]
+    "call s:mapMoveToWindowInDirection(dir)
+"endfor
 
 function! StripTrailingWhitespace()
   normal mZ
@@ -311,12 +379,14 @@ function! StripTrailingWhitespace()
 endfunction
 
 
-command! W w !sudo tee % > /dev/null
+command! W w
+command! Sw w !sudo tee % > /dev/null
 
 """""""""""""""""""""""""""""""""""
 """"""""""""""" FZF """""""""""""""
 """""""""""""""""""""""""""""""""""
 
+set rtp+=~/.config/nvim/syntax
 set rtp+=~/.fzf
 let $FZF_DEFAULT_COMMAND= 'ag -g ""'
 
@@ -402,10 +472,25 @@ nnoremap <leader>r :BTags<CR>
 " So the fzf statusline doesn't look stupid
 function! s:fzf_statusline()
   " Override statusline as you like
-  highlight fzf1 ctermfg=1 ctermbg=19
-  highlight fzf2 ctermfg=2 ctermbg=19
-  highlight fzf3 ctermfg=4 ctermbg=19
+  highlight fzf1 ctermfg=1
+  highlight fzf2 ctermfg=2
+  highlight fzf3 ctermfg=4
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
 endfunction
 
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+colorscheme railscasts
+" Customized railscast colors
+hi Normal ctermbg=none
+hi Visual ctermbg=6 ctermfg=0
+hi Sneak ctermbg=150 ctermfg=0
+hi Search ctermbg=150 ctermfg=0
+hi LineNr ctermbg=none ctermfg=242
+hi CursorLine ctermbg=235
+hi StatusLine cterm=bold,reverse
+hi StatusLineNc cterm=bold
+hi VertSplit cterm=none ctermfg=0
+hi GitGutterAdd ctermbg=none
+hi GitGutterDelete ctermbg=none
+hi GitGutterChange ctermbg=none
