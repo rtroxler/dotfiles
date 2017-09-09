@@ -1,0 +1,18 @@
+# Evan describes this sexy prompt as: "a skinny, topless prompt"
+PROMPT='%n :: %2~ %B»%b '
+
+# Adding right prompt for git branch and vim prompt
+function zle-line-init zle-keymap-select {
+  VIM_PROMPT="%{$fg_bold[red]%} [% %{$fg_bold[white]%} NORMAL %{$fg_bold[red]%}]% %{$reset_color%}"
+  RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} %{$fg[teal]%} $(git_prompt_info)%{$reset_color%}%{$reset_color%}"
+  RPS2=$RPS1
+  zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}✗%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN=" %{$fg[green]%}✓%{$reset_color%}"
