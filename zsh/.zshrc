@@ -5,7 +5,7 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="simple-trox"
+ZSH_THEME="evan"
 set -o ignoreeof
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
@@ -14,11 +14,14 @@ set -o ignoreeof
 # set term to xterm unless in tmux
 #set -g xterm-keys on
 # export TERM=xterm-256color
-#[ -n "$TMUX" ] && export TERM=screen-256color-bce
+[ -n "$TMUX" ] && export TERM=screen-256color
 #export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 #FUCK UPDATES
 DISABLE_AUTO_UPDATE="true"
+
+# Disable marking untracked files under VCS as dirty
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 #Case complete
 CASE_SENSITIVE="true"
@@ -82,11 +85,14 @@ export KEYTIMEOUT=1
     #zle reset-prompt
 #}
 
+
 ## Set current BASE16 color (pretty colors)
 ##  source $HOME/.zsh-current-color
 
 ##Path Variable
 export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:$HOME/bin:$HOME/.rbenv/bin:$HOME/.cargo/bin:/usr/local/lib/apache-maven-3.3.9/bin:$PATH
+
+export ES_HEAP_SIZE=8g
 
 eval "$(rbenv init -)"
 
@@ -95,7 +101,7 @@ export NVM_DIR="/Users/ryantroxler/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 ##[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-ulimit -n 2560
+ulimit -S -n 10000
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=1'
 
 # --files: List files that would be searched but do not search
