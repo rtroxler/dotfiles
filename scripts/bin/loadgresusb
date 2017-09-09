@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ! -d /Volumes/UltimateFunZone ]; then
+  echo "Volume 'UltimateFunZone' is not mounted"
+  exit
+fi
+
+stopgres
+sudo rm -rf /usr/local/var/postgres
+sudo rsync -a --info=progress2 /Volumes/UltimateFunZone/pg_backup/* /usr/local/var/postgres
+sudo chown -R ryantroxler /usr/local/var/postgres
+startgres

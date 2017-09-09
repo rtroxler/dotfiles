@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e "\033]6;1;bg;red;brightness;251\a"
+echo -e "\033]6;1;bg;green;brightness;241\a"
+echo -e "\033]6;1;bg;blue;brightness;233\a"

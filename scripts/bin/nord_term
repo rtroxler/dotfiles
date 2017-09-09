@@ -1,0 +1,3 @@
+echo -e "\033]1337;SetProfile=Nord\a"
+
+nord_title

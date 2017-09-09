@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Killing detached tmux sessions"
+tmux list-sessions
+tmux list-sessions | grep -v attached | awk '{gsub(/:/,""); print $1}' | xargs -L1 tmux kill-session -t
+echo "Dead"
+tmux list-sessions

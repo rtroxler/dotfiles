@@ -1,0 +1,5 @@
+
+echo -e "\033]6;1;bg;red;brightness;19\a"
+echo -e "\033]6;1;bg;green;brightness;26\a"
+echo -e "\033]6;1;bg;blue;brightness;35\a"
+

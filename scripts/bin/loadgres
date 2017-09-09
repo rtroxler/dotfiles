@@ -1,0 +1,7 @@
+#!/bin/bash
+
+stopgres
+sudo rm -rf /usr/local/var/postgres
+sudo cp -r ~/.postgres/databackup /usr/local/var/postgres
+sudo chown -R ryantroxler /usr/local/var/postgres
+startgres

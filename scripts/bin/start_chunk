@@ -1,0 +1,2 @@
+echo "Startin' it.."
+launchctl load -w ~/Library/LaunchAgents/com.koekeishiya.chunkwm.plist

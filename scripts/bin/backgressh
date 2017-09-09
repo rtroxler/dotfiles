@@ -1,0 +1,29 @@
+#!/bin/bash
+if [[ `ifconfig bridge0 | awk '$1 == "status:" {print $2}'` = "inactive" ]]; then
+  echo "Can't find bridge"
+  exit
+fi
+
+bridge_ip=$(ssh dmills@rMac.local 'ifconfig bridge0' | awk '$1 == "inet" { print $2}')
+echo "Bridge is: $bridge_ip"
+
+# Default folder to `pg_backup` unless passed in as arg
+FOLDER_NAME="${1-pg_backup}"
+read -p "Backing up database to: $FOLDER_NAME -- Are you sure? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+  exit 1
+fi
+
+stopgres
+
+# Get dmills ready
+echo "Dmills password: "
+ssh -t dmills@rMac.local "sudo rm -rf ~/$FOLDER_NAME/*"
+ssh dmills@rMac.local "mkdir -p ~/$FOLDER_NAME"
+
+# Send her over
+sudo rsync -a --info=progress2 /usr/local/var/postgres/* dmills@$bridge_ip:/Users/dmills/$FOLDER_NAME
+
+startgres

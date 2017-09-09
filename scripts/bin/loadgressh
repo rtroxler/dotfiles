@@ -1,0 +1,32 @@
+#!/bin/bash
+if [[ `ifconfig bridge0 | awk '$1 == "status:" {print $2}'` = "inactive" ]]; then
+  echo "Can't find bridge"
+  exit 1
+fi
+
+bridge_ip=$(ssh dmills@rMac.local 'ifconfig bridge0' | awk '$1 == "inet" { print $2}')
+echo "Bridge is: $bridge_ip"
+
+FOLDER_NAME="${1-pg_backup}"
+
+# Confirmation
+read -p "Loading database from: $FOLDER_NAME -- Are you sure? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+  exit 1
+fi
+
+# Check for remote directory before dropping our shiz
+if ! ssh dmills@rMac.local "[ -d ~/$FOLDER_NAME/base ]"; then
+  echo "Remote directory is not a postgres data directory."
+  exit 1
+fi
+
+stopgres
+sudo rm -rf /usr/local/var/postgres
+
+sudo rsync -a --info=progress2 dmills@$bridge_ip:/Users/dmills/$FOLDER_NAME/* /usr/local/var/postgres
+sudo chown -R ryantroxler /usr/local/var/postgres
+chmod 0700 /usr/local/var/postgres
+startgres

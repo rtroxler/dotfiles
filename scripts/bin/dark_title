@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -e "\033]6;1;bg;red;brightness;19\a"
+echo -e "\033]6;1;bg;green;brightness;22\a"
+echo -e "\033]6;1;bg;blue;brightness;39\a"
+
+# Apparently doing it twice makes it perfect
+echo -e "\033]6;1;bg;red;brightness;19\a"
+echo -e "\033]6;1;bg;green;brightness;22\a"
+echo -e "\033]6;1;bg;blue;brightness;39\a"
+

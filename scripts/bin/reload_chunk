@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Reloading.."
+kill_chunk
+start_chunk

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Set FirewatchDark
+echo -e "\033]1337;SetProfile=FirewatchDark\a"
+
+# title bar
+dark_title

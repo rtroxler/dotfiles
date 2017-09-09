@@ -1,0 +1,7 @@
+#!/bin/bash
+
+stopgres
+mkdir -p ~/.postgres
+sudo rm -rf ~/.postgres/databackup
+sudo cp -r /usr/local/var/postgres ~/.postgres/databackup
+startgres

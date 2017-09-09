@@ -1,0 +1,2 @@
+echo "Killin' it.."
+launchctl unload -w ~/Library/LaunchAgents/com.koekeishiya.chunkwm.plist
