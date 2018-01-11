@@ -1,0 +1,137 @@
+# Mouse support
+set-option -g mouse on
+set -g @scroll-speed-num-lines-per-scroll "1"
+
+# make tmux display things in 256 colors
+set -g default-terminal "screen-256color"
+
+# fuckin Sierra
+set -g default-shell $SHELL
+set -g default-command "reattach-to-user-namespace -l ${SHELL}"
+
+
+set-option -g allow-rename off
+
+set-option -ga terminal-overrides ",xterm-256color:Tc"
+
+# set scrollback history to 10000 (10k)
+set -g history-limit 10000
+
+# set Ctrl-<space> as the default prefix key combination
+# and unbind C-b to free it
+unbind C-b
+unbind C-Space
+set -g prefix C-s
+
+# use send-prefix to pass C-a through to application
+bind Space send-prefix
+
+# shorten command delay
+set -sg escape-time 1
+
+# set window and pane index to 1 (0 by default)
+set-option -g base-index 1
+setw -g pane-base-index 1
+set-window-option -g main-pane-width 175
+
+# reload ~/.tmux.conf using PREFIX r
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+# Re order window numbers
+bind R                                      \
+    move-window -r\;                        \
+    display-message "Windows reordered..."
+
+# Set status bar at the top
+set-option -g status-position top
+
+# use PREFIX = to split window horizontally and PREFIX \ to split vertically
+bind \ split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# Make the current window the first window
+bind T swap-window -t 1
+
+# Moving windows
+bind-key -r > swap-window -t :+
+bind-key -r < swap-window -t :-
+
+#remove prompt for killing panes
+bind-key x kill-pane
+
+# Remove scroll history
+bind-key k send-keys -R \; clear-history
+
+
+
+# Smart pane switching with awareness of Vim splits.
+# See: https://github.com/christoomey/vim-tmux-navigator
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n C-h if-shell "$is_vim" "send-keys C-h"  "select-pane -L"
+bind-key -n C-j if-shell "$is_vim" "send-keys C-j"  "select-pane -D"
+bind-key -n C-k if-shell "$is_vim" "send-keys C-k"  "select-pane -U"
+bind-key -n C-l if-shell "$is_vim" "send-keys C-l"  "select-pane -R"
+bind-key -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
+
+# resize panes using PREFIX H, J, K, L
+bind H resize-pane -L 5
+bind J resize-pane -D 5
+bind K resize-pane -U 5
+bind L resize-pane -R 5
+
+bind h previous-window
+bind l next-window
+
+bind -n M-h previous-window
+bind -n M-l next-window
+
+bind-key -n M-1 select-window -t 1
+bind-key -n M-2 select-window -t 2
+bind-key -n M-3 select-window -t 3
+bind-key -n M-4 select-window -t 4
+bind-key -n M-5 select-window -t 5
+
+#some vim copy stuff
+set-window-option -g mode-keys vi
+bind-key / copy-mode
+bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-pipe 'reattach-to-user-namespace pbcopy'
+
+
+#
+## Theme
+#
+
+# panes
+set -g pane-border-fg colour0
+set -g pane-active-border-fg colour238
+
+# toggle statusbar
+bind-key b set-option status
+
+# status line
+set -g status-justify left
+set -g status-bg default
+set -g status-fg default
+set -g status-interval 2
+
+# messaging
+set -g message-fg black
+set -g message-bg white
+set -g message-command-fg blue
+set -g message-command-bg black
+set -g automatic-rename on
+
+# window mode
+setw -g mode-bg colour6
+setw -g mode-fg colour0
+
+# colors
+setw -g window-status-format "#[fg=colour250] •#[fg=colour250] #W " # Used to be colour4 (when using dark background)
+setw -g window-status-current-format "#[fg=colour140] •#[fg=colour36] #W "
+setw -g window-status-current-attr dim
+set -g status-position bottom
+set -g status-justify centre
+set -g status-left "#[fg=colour3]• #[fg=colour2]• #[fg=colour4]•"
+set -g status-right " #[fg=colour4] •#[fg=colour2] #S  "
