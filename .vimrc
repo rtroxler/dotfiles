@@ -14,15 +14,29 @@ Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'jreybert/vimagit'
 Plug 'janko-m/vim-test'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'rtroxler/lightline.vim'
+Plug 'takac/vim-hardtime'
+Plug 'jiangmiao/auto-pairs'
+Plug 'racer-rust/vim-racer', { 'for': 'rust', 'commit': 'e2cf315fb89dfcc3050da1a885129b1baa7f4889'}
+Plug 'rust-lang/rust.vim', { 'for': 'rust'}
+
+"Plug 'qpkorr/vim-bufkill'
+"Plug 'jgdavey/tslime.vim'
 
 " Colors
 Plug 'YorickPeterse/happy_hacking.vim' " Current winner
-Plug 'romainl/Apprentice'
-Plug 'chriskempson/base16-vim'
+Plug 'rtroxler/vim-colors-plain'
+Plug 'mswift42/vim-themes' " emacs thems
+Plug 'jacoborus/tender.vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'davidklsn/vim-sialoquent'
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'atelierbram/Base2Tone-vim'
+"Plug 'jnurmine/Zenburn'
 
-" Language things
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 
 call plug#end()
 
@@ -41,10 +55,10 @@ set noswapfile
 " Prevents lag when moving around and scrolling in vim. Disable with
 " `nolazyredraw` if you have problems with vims graphics not being updated
 " correctly
-" set lazyredraw
+"set lazyredraw
 
 " Show show actual line number on current line
-set number
+"set number
 
 set mouse=a
 
@@ -58,7 +72,8 @@ set showcmd
 set showmatch
 
 " Wrap long line, don't break words
-set wrap linebreak
+"set wrap linebreak
+set nowrap
 
 set breakindent
 set showbreak=˒˒
@@ -103,29 +118,70 @@ set listchars=nbsp:∘,tab:➟\ ,trail:∘
 
 set hlsearch
 
-set statusline=%F       "tail of the filename
-set statusline+=\ [%{&ff}] "file format
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=%{fugitive#statusline()}
-set statusline+=%m      "modified flag
-set statusline+=%=      "left/right separator
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file
-
 " Always show status bar
 set laststatus=2
 
+set cursorline
+
 if has('gui_running')
+  set clipboard=unnamed
   set guioptions=
-  "set guifont=PragmataPro:h16
-  set guifont=Code\ New\ Roman:h16
+  set macligatures
+  "set guifont=Fira\ Code\ Regular:h14 " Lol this name
+  "set guifont=PragmataPro:h15
+  set guifont=Iosevka:h15
+  "set guifont=InputMonoCondensed\ Light:h15
+
+  "color plain
+  "set background=light
+
+  " It's fall time, bitches
+  colorscheme Base2Tone_DesertDark
+  "colorscheme Base2Tone_DesertLight
+
+  "colo gruvbox8
+  "syntax off " meh
+  "set background=dark
+  "color wombat
 endif
 
-color oldlace
-"color happy_hacking
-"hi Cursor guifg=black guibg=green
+" lightline
+      "\ 'colorscheme': 'plain',
+      "\ 'colorscheme': 'wombat',
+      "\ 'colorscheme': 'gruvbox',
+let g:lightline = {
+      \ 'colorscheme': 'Base2Tone_Desert',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+
+
+if !has('gui_running')
+  set termguicolors
+  "set term=screen-256color
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+  "color gruvbox8
+  "set background=dark
+  "color happy_hacking
+  " happy_hacking upgrades
+
+  "colo plain
+  "set background=light
+  " It's fall time, bitches
+  colorscheme Base2Tone_DesertDark
+
+  "color hemisu
+  " hemisu upgrades
+  "hi Search ctermbg=23
+  "hi CursorLine ctermbg=234 cterm=NONE
+endif
 
 " }}}
 
@@ -178,6 +234,9 @@ nnoremap <BS> :b#<CR>
 
 nnoremap - :Explore<cr>
 
+nnoremap <leader>k :GitGutterPrevHunk<CR>
+nnoremap <leader>j :GitGutterNextHunk<CR>
+
 " conventional shifting
 vnoremap < <gv
 vnoremap > >gv
@@ -204,6 +263,7 @@ nnoremap <leader>gs :Magit<CR>
 
 " CtrlP
 nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>t :CtrlPTag<CR>
 nnoremap <leader>r :CtrlPBufTag<cr>
 
 " vim-test
@@ -227,6 +287,10 @@ augroup ruby_things
   autocmd BufEnter *.rb syn match error contained "\<Rails.logger.ap\>"
 augroup END
 
+augroup rust_things
+  autocmd FileType rust :iabbrev ra* println!("********************************************************************************");
+augroup END
+
 augroup misc_filetypes
   autocmd!
   autocmd FileType javascript setlocal shiftwidth=4 tabstop=4
@@ -243,6 +307,12 @@ augroup misc_filetypes
   au BufRead,BufNewFile *.exs set filetype=elixir
   au BufRead,BufNewFile *.go set filetype=go
 augroup END
+
+"augroup BgHighlight
+    "autocmd!
+    "autocmd WinEnter * set cul
+    "autocmd WinLeave * set nocul
+"augroup END
 
 augroup other
   autocmd!
@@ -274,6 +344,12 @@ endfunction
 " {{{ Plugin Settings
 let ruby_no_expensive = 1 " No Slow Ruby
 
+let g:hardtime_timeout = 500
+
+let g:racer_cmd = "/Users/ryantroxler/.cargo/bin/racer"
+
+nnoremap <leader>h :HardTimeToggle<CR>
+
 nnoremap <leader>a :Ack!<space>
 nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>
 let g:ack_use_dispatch = 1 " Dispatch Ack
@@ -287,24 +363,36 @@ if executable('ag')
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
+  let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|target'
 endif
 "
 " CtrlP
 "
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
-set tags=/home/ryantroxler/code/fms/tags
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>t :CtrlPTag<CR>
+"set tags=./tags,tags;
+set tags=./tags;/
+
 let g:ctrlp_match_window = 'max:20,results:50'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:ctrlp_extensions = ['buffertag', 'tag']
+let g:ctrlp_buftag_types = { 'rust': '--language-force=rust --rust-types=fTgsti' }
 
 set wildignore+=*.pdf,*.xml
+set wildignore+=*/tmp/*,*.so,*.d,*.swp,*.zip,*/target/*
 
 " vim-test
 let test#strategy = "terminal"
+"let test#strategy = "tslime"
 
-" }}}
+"rust.vim
+let g:rustfmt_autosave = 1 " Replace when https://github.com/rust-lang/rust.vim/issues/245 is fixed
+"let g:rust_fold = 1
+
+" racer
+let g:racer_cmd = "/Users/ryantroxler/.cargo/bin/racer"
+
+
 
 " {{{ Misc Functions
 
