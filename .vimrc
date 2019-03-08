@@ -2,6 +2,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Necessities
 Plug 'mileszs/ack.vim'
+Plug 'danchoi/ruby_bashrockets.vim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -19,6 +20,9 @@ Plug 'takac/vim-hardtime'
 Plug 'jiangmiao/auto-pairs'
 Plug 'racer-rust/vim-racer', { 'for': 'rust', 'commit': 'e2cf315fb89dfcc3050da1a885129b1baa7f4889'}
 Plug 'rust-lang/rust.vim', { 'for': 'rust'}
+Plug 'markonm/traces.vim'
+Plug 'wellle/targets.vim'
+Plug 'Yggdroot/indentLine'
 
 "Plug 'qpkorr/vim-bufkill'
 "Plug 'jgdavey/tslime.vim'
@@ -33,7 +37,14 @@ Plug 'davidklsn/vim-sialoquent'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'atelierbram/Base2Tone-vim'
+Plug 'Donearm/Laederon'
+Plug 'logico-dev/typewriter'
+Plug 'rakr/vim-two-firewatch'
 "Plug 'jnurmine/Zenburn'
+Plug 'chrisdiana/itg_flat_vim'
+Plug 'maksimr/Lucius2'
+Plug 'xero/sourcerer.vim'
+Plug 'orthecreedence/void.vim'
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -90,10 +101,10 @@ set incsearch
 " Set 'tabstop' and 'shiftwidth' to whatever you prefer and use
 " 	   'expandtab'.  This way you will always insert spaces.  The
 " 	   formatting will never be messed up when 'tabstop' is changed.
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
+"set expandtab
+"set shiftwidth=2
+"set softtabstop=2
+"set tabstop=2
 " Round indent to multiple of 'shiftwidth' when indenting with > and <
 set shiftround
 
@@ -122,21 +133,25 @@ set hlsearch
 set laststatus=2
 
 set cursorline
+set colorcolumn=80
 
 if has('gui_running')
   set clipboard=unnamed
   set guioptions=
   set macligatures
-  "set guifont=Fira\ Code\ Regular:h14 " Lol this name
+  set guifont=Fira\ Code\ Regular:h14 " Lol this name
   "set guifont=PragmataPro:h15
-  set guifont=Iosevka:h15
+  "set guifont=Courier:h14
+  "set guifont=mplus-1mn-regular:h14
+
+  "set guifont=Iosevka:h15
   "set guifont=InputMonoCondensed\ Light:h15
 
   "color plain
-  "set background=light
+  color sourcerer
+  set background=dark
 
   " It's fall time, bitches
-  colorscheme Base2Tone_DesertDark
   "colorscheme Base2Tone_DesertLight
 
   "colo gruvbox8
@@ -147,10 +162,12 @@ endif
 
 " lightline
       "\ 'colorscheme': 'plain',
-      "\ 'colorscheme': 'wombat',
       "\ 'colorscheme': 'gruvbox',
+      "\ 'colorscheme': 'wombat',
+      "\ 'colorscheme': 'Base2Tone_Desert',
+      "\ 'colorscheme': 'oldlace',
 let g:lightline = {
-      \ 'colorscheme': 'Base2Tone_Desert',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -175,8 +192,10 @@ if !has('gui_running')
   "colo plain
   "set background=light
   " It's fall time, bitches
-  colorscheme Base2Tone_DesertDark
+  "colorscheme Base2Tone_DesertDark
+  colorscheme sourcerer
 
+  "color greenscreen
   "color hemisu
   " hemisu upgrades
   "hi Search ctermbg=23
@@ -296,7 +315,7 @@ augroup misc_filetypes
   autocmd FileType javascript setlocal shiftwidth=4 tabstop=4
   autocmd FileType javascript.jsx setlocal shiftwidth=4 tabstop=4
   autocmd FileType eruby setlocal shiftwidth=4 tabstop=4
-  autocmd FileType c setlocal shiftwidth=4 tabstop=4
+  autocmd FileType c setlocal noet ci pi sts=0 sw=8 ts=8 cindent
   autocmd FileType rust setlocal shiftwidth=4 tabstop=4
   autocmd FileType less setlocal shiftwidth=2 tabstop=2
   autocmd FileType erlang setlocal shiftwidth=4 tabstop=4
@@ -393,6 +412,10 @@ let g:rustfmt_autosave = 1 " Replace when https://github.com/rust-lang/rust.vim/
 let g:racer_cmd = "/Users/ryantroxler/.cargo/bin/racer"
 
 
+" indentLine
+let g:indentLine_faster = 1
+let g:indentLine_setConceal = 0
+let g:indentLine_char = '┆'
 
 " {{{ Misc Functions
 
@@ -403,6 +426,26 @@ let g:racer_cmd = "/Users/ryantroxler/.cargo/bin/racer"
 "endfunction
 
 "command! -range JsonFormat <line1>,<line2>call JsonFormat()
+function! s:hashrockets() range
+  let lnum = a:firstline
+  while lnum <= a:lastline
+    let newline = substitute(getline(lnum), '\(\w\+\):', ':\1 =>', 'g')
+    call setline(lnum, newline)
+    let lnum += 1
+  endwhile
+endfunction
+
+function! s:bashrockets() range
+  let lnum = a:firstline
+  while lnum <= a:lastline
+    let newline = substitute(getline(lnum), ':\(\w\+\)\s*=>', '\1:', 'g')
+    call setline(lnum, newline)
+    let lnum += 1
+  endwhile
+endfunction
+command! -range Bashrockets :<line1>,<line2>call s:bashrockets()
+command! -range Hashrockets :<line1>,<line2>call s:hashrockets()
+
 
 " }}}
 
